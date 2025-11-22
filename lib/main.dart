@@ -21,15 +21,14 @@ class SpacezApp extends StatelessWidget {
       title: 'Spacez',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: const Color(0xFFC06C44), // Terra-cotta
-        scaffoldBackgroundColor: Colors.white,
+        primaryColor: const Color(0xFFC06C44),
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFFC06C44),
           primary: const Color(0xFFC06C44),
-          secondary: const Color(0xFF2E7D32), // Forest Green
+          secondary: const Color(0xFF2E7D32),
         ),
-        fontFamily: 'Roboto', // Default readable font
+        fontFamily: 'Roboto',
       ),
       home: const CouponsScreen(),
     );
@@ -44,12 +43,8 @@ class CouponsScreen extends StatefulWidget {
 }
 
 class _CouponsScreenState extends State<CouponsScreen> {
-  // Track applied coupons by their unique code (or index if codes duplicate)
-  // Using a Set allows for multiple non-conflicting coupons if needed,
-  // or logic can be added to clear others when one is added.
   final Set<int> _appliedCouponIndices = {};
 
-  // Mock Data
   final coupons = [
     CouponData(
       amount: "₹6,900",
@@ -90,13 +85,8 @@ class _CouponsScreenState extends State<CouponsScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // 1. Top Brand Bar (Logo + Menu)
             const BrandBar(),
-
-            // 2. Navigation Sub-header (Back + Title)
             const NavigationHeader(title: "Coupons"),
-
-            // 3. Scrollable Coupon List
             Expanded(
               child: Container(
                 color: const Color(0xFFFAFAFA),
@@ -145,15 +135,11 @@ class _CouponsScreenState extends State<CouponsScreen> {
                             onToggle: () => _toggleCoupon(index),
                           );
                         }),
-
-                    // Extra padding to prevent content hiding behind footer
                     const SizedBox(height: 20),
                   ],
                 ),
               ),
             ),
-
-            // 4. Sticky Footer (Promo Banner + Reserve)
             const StickyFooter(),
           ],
         ),
@@ -161,8 +147,6 @@ class _CouponsScreenState extends State<CouponsScreen> {
     );
   }
 }
-
-// --- COMPONENTS ---
 
 class BrandBar extends StatefulWidget {
   const BrandBar({super.key});
@@ -208,7 +192,7 @@ class _BrandBarState extends State<BrandBar> {
               const SizedBox(width: 8),
               Image.asset(
                 'assets/spacez.png',
-                height: 20, // Slightly shorter than the icon for visual balance
+                height: 20,
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) {
                   return Text(
@@ -225,8 +209,6 @@ class _BrandBarState extends State<BrandBar> {
               ),
             ],
           ),
-
-          // Hamburger Menu
           InkWell(
             onTap: () {
               _debouncer.run(() {
@@ -326,11 +308,10 @@ class _StickyFooterState extends State<StickyFooter> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Green Promo Strip
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 10),
-            color: const Color(0xFF388E3C), // Forest Green
+            color: const Color(0xFF388E3C),
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -347,8 +328,6 @@ class _StickyFooterState extends State<StickyFooter> {
               ],
             ),
           ),
-
-          // Reservation Details
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
@@ -357,7 +336,6 @@ class _StickyFooterState extends State<StickyFooter> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Pricing Row
                       const Row(
                         crossAxisAlignment: CrossAxisAlignment.baseline,
                         textBaseline: TextBaseline.alphabetic,
@@ -388,7 +366,6 @@ class _StickyFooterState extends State<StickyFooter> {
                         ],
                       ),
                       const SizedBox(height: 4),
-                      // Date & Guest Row
                       Row(
                         children: [
                           const Text(
@@ -412,7 +389,6 @@ class _StickyFooterState extends State<StickyFooter> {
                     ],
                   ),
                 ),
-                // Reserve Button
                 ElevatedButton(
                   onPressed: () {
                     _debouncer.run(() {
@@ -476,14 +452,12 @@ class _CouponTicketState extends State<CouponTicket> {
 
   @override
   Widget build(BuildContext context) {
-    // Visual effect: Subtle border color change when applied
     final borderColor = widget.isApplied
         ? Theme.of(context).secondaryHeaderColor
         : Colors.transparent;
 
-    // Visual effect: Subtle background tint when applied
     final bgTint = widget.isApplied
-        ? const Color(0xFFE8F5E9) // Very light green
+        ? const Color(0xFFE8F5E9)
         : const Color(0xFFFDFDFD);
 
     return AnimatedContainer(
@@ -508,13 +482,12 @@ class _CouponTicketState extends State<CouponTicket> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // --- Left Strip (Price) ---
             Container(
               width: 60,
               decoration: BoxDecoration(
                 color: widget.isApplied
-                    ? const Color(0xFF2E7D32) // Green if applied
-                    : Theme.of(context).primaryColor, // Default Brown
+                    ? const Color(0xFF2E7D32)
+                    : Theme.of(context).primaryColor,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(2),
                   bottomLeft: Radius.circular(2),
@@ -536,20 +509,17 @@ class _CouponTicketState extends State<CouponTicket> {
               ),
             ),
 
-            // --- Dashed Line ---
             CustomPaint(
               painter: DashedLinePainter(),
               size: const Size(1, double.infinity),
             ),
 
-            // --- Right Content ---
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Code & Apply/Remove Row
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -565,9 +535,7 @@ class _CouponTicketState extends State<CouponTicket> {
                         InkWell(
                           onTap: () {
                             _debouncer.run(() {
-                              widget.onToggle(); // Call parent logic
-
-                              // Show generic feedback
+                              widget.onToggle();
                               ScaffoldMessenger.of(
                                 context,
                               ).hideCurrentSnackBar();
@@ -631,10 +599,7 @@ class _CouponTicketState extends State<CouponTicket> {
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 12),
-
-                    // Description
                     Text(
                       widget.data.description,
                       maxLines: isExpanded ? null : 3,
@@ -650,8 +615,6 @@ class _CouponTicketState extends State<CouponTicket> {
 
                     const Spacer(),
                     const SizedBox(height: 10),
-
-                    // Read More
                     InkWell(
                       onTap: () {
                         setState(() {
@@ -678,7 +641,6 @@ class _CouponTicketState extends State<CouponTicket> {
   }
 }
 
-// Custom Painter for that "ticket tear" look
 class DashedLinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -689,7 +651,7 @@ class DashedLinePainter extends CustomPainter {
 
     const dashWidth = 5;
     const dashSpace = 5;
-    double startY = 6; // padding top
+    double startY = 6;
 
     while (startY < size.height - 6) {
       canvas.drawLine(Offset(0, startY), Offset(0, startY + dashWidth), paint);
@@ -714,8 +676,6 @@ class CouponData {
     required this.type,
   });
 }
-
-// --- UTILITIES ---
 
 class Debouncer {
   final int milliseconds;
